@@ -2,6 +2,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <iostream>
+#include <cassert>
 namespace lve{
 
   LvePipeline::LvePipeline(
@@ -41,6 +42,12 @@ namespace lve{
     const std::string& fragFilepath,
     const PipelineConfigInfo& configInfo){
 
+      assert(
+        confiInfo.pipelineLayout != VK_NULL_HANDLE &&
+      "Cannot create graphics pipeline:: nopipelineLayout provided in configInfo");
+      assert(
+        confiInfo.renderPass != VK_NULL_HANDLE &&
+      "Cannot create graphics pipeline:: norenderPass provided in configInfo");
       auto vertCode = readFile(vertFilepath);
       auto fragCode = readFile(fragFilepath);
 
@@ -73,14 +80,23 @@ namespace lve{
       vertexInputInfo.pVertexAttributeDescriptions = nullptr;
       vertexInputInfo.pVertexBindingDescriptions = nullptr;
 
+      VkPipeineViewpwertStateCreateInfo viewportInfo{};
+      viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+      viewportInfo.viewportCount = 1;
+      viewportInfo.pViewports = &configInfo.viewport;
+      viewportInfo.scissorCount = 1;
+      viewportInfo.pScissors = &configInfo.scissor;
+
+
       VkGraphicsPipelineCreateInfo pipelineInfo{};
       pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
       pipelineInfo.stageCount = 2;
       pipelineInfo.pStages = shaderStages;
       pipelineInfo.pVertexInputState = &vertexInputInfo;
       pipelineInfo.pInputAssemblyState = &configInfo.inputAssemblyInfo;
-      pipelineInfo.pViewportState = &configInfo.viewportInfo;
+      pipelineInfo.pViewportState = &viewportInfo;
       pipelineInfo.pRasterizationState = &configInfo.rasterizationInfo;
+      pipelineInfo.pMultisampleState = &configInfo.multisampleInfo;
       pipelineInfo.pColorBlendState = &configInfo.colorBlendInfo;
       pipelineInfo.pDepthStencilState = &configInfo.depthStencilInfo;
       pipelineInfo.pDynamicState = nullptr;
@@ -112,7 +128,7 @@ namespace lve{
 
     PipelineConfigInfo LvePipeline::defaultPipelineConfigInfo(uint32_t width, uint32_t height){
       PipelineConfigInfo configInfo{};
-       
+
       configInfo.inputAssemblyInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
       configInfo.inputAssemblyInfo.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
       configInfo.inputAssemblyInfo.primitiveRestartEnable = VK_FALSE;
@@ -128,13 +144,6 @@ namespace lve{
       // Cuts pixels outside of the given space
       configInfo.scissor.offset = {0, 0};
       configInfo.scissor.extent = {width, height};
-
-      configInfo.viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-      configInfo.viewportInfo.viewportCount = 1;
-      configInfo.viewportInfo.pViewports = &configInfo.viewport;
-      configInfo.viewportInfo.scissorCount = 1;
-      configInfo.viewportInfo.pScissors = &configInfo.scissor;
-
       //Rasterization phase
       configInfo.rasterizationInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
       configInfo.rasterizationInfo.depthClampEnable = VK_FALSE;
@@ -149,13 +158,13 @@ namespace lve{
       configInfo.rasterizationInfo.depthBiasSlopeFactor = 0.0f;       // Nto currently in use
 
       // Multisampling reduces aliasing during rasterization
-      configInfo.mulitsampleInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
-      configInfo.mulitsampleInfo.sampleShadingEnable = VK_FALSE;
-      configInfo.mulitsampleInfo.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
-      configInfo.mulitsampleInfo.minSampleShading = 1.0f;            // Not currently in use
-      configInfo.mulitsampleInfo.pSampleMask = nullptr;              // Not currently in use
-      configInfo.mulitsampleInfo.alphaToCoverageEnable = VK_FALSE;   // Not currently in use
-      configInfo.mulitsampleInfo.alphaToOneEnable = VK_FALSE;        // Not currently in use
+      configInfo.multisampleInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+      configInfo.multisampleInfo.sampleShadingEnable = VK_FALSE;
+      configInfo.multisampleInfo.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
+      configInfo.multisampleInfo.minSampleShading = 1.0f;            // Not currently in use
+      configInfo.multisampleInfo.pSampleMask = nullptr;              // Not currently in use
+      configInfo.multisampleInfo.alphaToCoverageEnable = VK_FALSE;   // Not currently in use
+      configInfo.multisampleInfo.alphaToOneEnable = VK_FALSE;        // Not currently in use
 
       // color Blending
       configInfo.colorBlendAttachment.colorWriteMask =
@@ -168,7 +177,7 @@ namespace lve{
       configInfo.colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;   // Optional
       configInfo.colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;  // Optional
       configInfo.colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;              // Optional
- 
+
       configInfo.colorBlendInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
       configInfo.colorBlendInfo.logicOpEnable = VK_FALSE;
       configInfo.colorBlendInfo.logicOp = VK_LOGIC_OP_COPY;  // Optional
