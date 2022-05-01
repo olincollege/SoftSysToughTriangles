@@ -43,10 +43,10 @@ namespace lve{
     const PipelineConfigInfo& configInfo){
 
       assert(
-        confiInfo.pipelineLayout != VK_NULL_HANDLE &&
+        configInfo.pipelineLayout != VK_NULL_HANDLE &&
       "Cannot create graphics pipeline:: nopipelineLayout provided in configInfo");
       assert(
-        confiInfo.renderPass != VK_NULL_HANDLE &&
+        configInfo.renderPass != VK_NULL_HANDLE &&
       "Cannot create graphics pipeline:: norenderPass provided in configInfo");
       auto vertCode = readFile(vertFilepath);
       auto fragCode = readFile(fragFilepath);
@@ -80,7 +80,7 @@ namespace lve{
       vertexInputInfo.pVertexAttributeDescriptions = nullptr;
       vertexInputInfo.pVertexBindingDescriptions = nullptr;
 
-      VkPipeineViewpwertStateCreateInfo viewportInfo{};
+      VkPipelineViewportStateCreateInfo viewportInfo{};
       viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
       viewportInfo.viewportCount = 1;
       viewportInfo.pViewports = &configInfo.viewport;
