@@ -7,6 +7,7 @@ Our goal is to learn how to use Vulcan to do graphics programming. Our lower bou
 
  
 Trevor: I think learning about an exciting application of C++ or C. Getting into this slimy of an api with lots of complicated structures is also going to be a new experience for me.
+
 Andrew: I would love to learn about how computer graphics are handled on modern systems. If we managed to implement any sort of ray tracing I would be thrilled, but I’ll take an image processed by the GPU. 
 
 ## How did it go?
