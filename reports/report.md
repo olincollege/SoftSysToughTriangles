@@ -12,16 +12,19 @@ Andrew: I would love to learn about how computer graphics are handled on modern 
 ## How did it go?
 
 We mostly followed a tutorial series from Brenden Galea on youtube (https://www.youtube.com/watch?v=Y9U9IE0gVHA) that went into more detail about implementation than other tutorials pages.
-We were able to follow the tutorial up to getting a triangle to show up in a static window. We realized that even a triangle was a bit out of our depth (2000+ lines), the C++ syntax and Vulkan API had a very high learning curve. In Vulkan, there are no default settings, so even to create a window or visualize a single triangle takes hundreds of lines of parameter settings and a dense file structure. Understanding what each of those values could be several SoftSys projects in and of themselves. There was a lot of background information to understand about the graphics pipeline, Vulkan device, physical device, Vulkan instance, surface, queue, frame buffers, swap chain, push constants, shaders, etc. We managed to follow along with the tutorial, but there were many sections where we were filling out dozens of parameters with no real explanation of their meaning (“We’ll talk about this later”).  Andrew could’ve even run the code once we got to it because of WSL. Once we got through understanding how to implement the different parts of the graphics pipeline for a hard coded triangle, we felt that it was more useful to understand theoretical concepts than to get lost debugging so we continued to watch the explanation parts of the rest of the series and learned about what we would need to do to implement more complex concepts like using buffers more efficiently, rasterization/gradient coloring, moveable objects, a moveable camera angle/position, spectral/diffuse lighting, generating 3d models, ect (much more visually interesting).
+We were able to follow the tutorial up to getting a triangle to show up in a static window. We realized that even a triangle was a bit out of our depth (2000+ lines), the C++ syntax and Vulkan API had a very high learning curve. In Vulkan, there are no default settings, so even to create a window or visualize a single triangle takes hundreds of lines of parameter settings and a dense file structure. Understanding what each of those values could be several SoftSys projects in and of themselves. 
 
+ex.
 ```
   VkCommandBufferBeginInfo beginInfo{};
   beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
   beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-configInfo.rasterizationInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+  configInfo.rasterizationInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
 
 ```
- 
+
+There was a lot of background information to understand about the graphics pipeline, Vulkan device, physical device, Vulkan instance, surface, queue, frame buffers, swap chain, push constants, shaders, etc. We managed to follow along with the tutorial, but there were many sections where we were filling out dozens of parameters with no real explanation of their meaning (“We’ll talk about this later”).  Andrew could’ve even run the code once we got to it because of WSL. Once we got through understanding how to implement the different parts of the graphics pipeline for a hard coded triangle, we felt that it was more useful to understand theoretical concepts than to get lost debugging so we continued to watch the explanation parts of the rest of the series and learned about what we would need to do to implement more complex concepts like using buffers more efficiently, rasterization/gradient coloring, moveable objects, a moveable camera angle/position, spectral/diffuse lighting, generating 3d models, ect (much more visually interesting).
+
 
 The biggest choice we made was stopping once we got to the triangle. Even though we could’ve kept on following along mindlessly and rendered some things that looked cool, we realized that the barrier of entry was already so high that continuing wouldn't feel as beneficial to our learning. We continued to watch the concept overview sections because we felt we would get more from a conceptual understanding than from copying more bricks of code.
 
