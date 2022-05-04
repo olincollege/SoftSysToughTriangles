@@ -13,7 +13,16 @@ Andrew: I would love to learn about how computer graphics are handled on modern 
 ## How did it go?
 
 We mostly followed a tutorial series from Brenden Galea on youtube (https://www.youtube.com/watch?v=Y9U9IE0gVHA) that went into more detail about implementation than other tutorials pages.
-We were able to follow the tutorial up to getting a triangle to show up in a static window. We realized that even a triangle was a bit out of our depth (1500+ lines), the C++ syntax and Vulkan API had a very high learning curve. In Vulkan, there are no default settings, so even to create a window or visualize a single triangle takes hundreds of lines of parameter settings and a dense file structure. Understanding what each of those values could be several SoftSys projects in and of themselves. 
+We were able to follow the tutorial up to getting a triangle to show up in a static window.
+
+File overview:
+first_app: combines everything
+lve_device.cpp : Sets up a Vulkan Device with access to the physical GPU in order to utilize parallel computing.
+lve_pipeline.cpp: Sets up a graphics pipeline object and configures the fixed parts of the pipeline and utilizes a vertex and fragment shader for the programmable parts using OpenGL Shading Language (GLSL) in the shaders folder
+lve_swap_chain.cpp: Sets up a swap chain to swap rendered frames
+lve_window: sets up a VK surface that feeds into a GLF Window (an API for creating cross-platform compatible windows)
+
+We realized that even a triangle was a bit out of our depth (1500+ lines), the C++ syntax and Vulkan API had a very high learning curve. In Vulkan, there are no default settings, so even to create a window or visualize a single triangle takes hundreds of lines of parameter settings and a dense file structure. Understanding what each of those values could be several SoftSys projects in and of themselves. 
 
 ex.
 ```
